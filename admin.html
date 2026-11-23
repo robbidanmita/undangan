@@ -1,0 +1,1217 @@
+
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Undangan</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f8f7f4;
+  color: #292524;
+}
+.panel {
+  background: white;
+  border: 1px solid #eee7dc;
+  border-radius: 15px;
+}
+.btn {
+  border-radius: 9px;
+  padding: 9px 13px;
+  font-size: 12px;
+  font-weight: bold;
+}
+.primary {
+  background: #c5a880;
+  color: #292524;
+}
+.muted {
+  background: #f3f0eb;
+}
+.badge {
+  border-radius: 20px;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: bold;
+}
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+</style>
+</head>
+
+<body>
+
+<main class="max-w-7xl mx-auto p-4 md:p-8">
+
+<header class="flex flex-wrap justify-between items-center gap-3 mb-7">
+  <div>
+    <p class="text-xs uppercase tracking-widest text-amber-800">
+      Wedding Invitation
+    </p>
+    <h1 class="text-3xl font-bold">Guest Management</h1>
+    <p class="text-sm text-stone-500">
+      Kelola tamu, RSVP, dan status pembukaan undangan.
+    </p>
+  </div>
+
+  <a href="./" target="_blank" rel="noopener" class="btn muted">
+    Lihat Undangan ↗
+  </a>
+</header>
+
+<!-- LOGIN -->
+
+<section id="login" class="panel p-5 max-w-md mx-auto mt-12">
+
+  <h2 class="font-bold text-lg">Login Admin</h2>
+
+  <p class="text-xs text-stone-500 my-2">
+    Masukkan password admin.
+  </p>
+
+  <form id="loginForm">
+
+    <input
+      id="password"
+      type="password"
+      autocomplete="current-password"
+      required
+      class="border rounded-lg w-full p-3 text-sm"
+      placeholder="Password admin"
+    >
+
+    <button
+      id="loginButton"
+      type="submit"
+      class="btn primary w-full mt-3"
+    >
+      Masuk
+    </button>
+
+  </form>
+
+  <p id="loginMsg" class="text-xs text-red-600 mt-3"></p>
+
+</section>
+
+
+<!-- DASHBOARD -->
+
+<section id="app" class="hidden">
+
+  <div class="flex justify-between items-center my-4">
+
+    <p id="updated" class="text-xs text-stone-500"></p>
+
+    <div class="flex gap-2">
+
+      <button id="refreshButton" class="btn muted">
+        Refresh
+      </button>
+
+      <button id="logoutButton" class="btn muted">
+        Keluar
+      </button>
+
+    </div>
+  </div>
+
+
+  <!-- STATISTIK -->
+
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+
+    <div class="panel p-4">
+      <p class="text-xs text-stone-500">Total Tamu</p>
+      <b id="total" class="text-3xl">0</b>
+    </div>
+
+    <div class="panel p-4">
+      <p class="text-xs text-stone-500">Sudah Membuka</p>
+      <b id="opened" class="text-3xl text-green-700">0</b>
+      <p id="rate" class="text-xs text-stone-400"></p>
+    </div>
+
+    <div class="panel p-4">
+      <p class="text-xs text-stone-500">Hadir</p>
+      <b id="hadir" class="text-3xl text-green-700">0</b>
+    </div>
+
+    <div class="panel p-4">
+      <p class="text-xs text-stone-500">Berhalangan</p>
+      <b id="berhalangan" class="text-3xl text-red-600">0</b>
+    </div>
+
+  </div>
+
+
+  <div class="grid grid-cols-2 gap-3 mb-6">
+
+    <div class="panel p-4">
+      <p class="text-xs text-stone-500">Belum Membuka</p>
+      <b id="notOpened" class="text-2xl">0</b>
+    </div>
+
+    <div class="panel p-4">
+      <p class="text-xs text-stone-500">Belum Merespons</p>
+      <b id="noResponse" class="text-2xl">0</b>
+    </div>
+
+  </div>
+
+
+  <!-- TAMBAH TAMU -->
+
+  <div class="grid lg:grid-cols-3 gap-4 mb-6">
+
+    <section class="panel p-5">
+
+      <h2 class="font-bold mb-3">Tambah Satu Tamu</h2>
+
+      <form id="addForm" class="space-y-3">
+
+        <input
+          id="newName"
+          required
+          maxlength="80"
+          class="border rounded-lg p-2.5 w-full text-sm"
+          placeholder="Nama tamu"
+        >
+
+        <input
+          id="newPhone"
+          class="border rounded-lg p-2.5 w-full text-sm"
+          placeholder="No. WhatsApp (628...)"
+        >
+
+        <button
+          type="submit"
+          class="btn primary w-full"
+        >
+          Tambah Tamu
+        </button>
+
+      </form>
+
+    </section>
+
+
+    <section class="panel p-5 lg:col-span-2">
+
+      <h2 class="font-bold mb-1">Tambah Banyak Tamu</h2>
+
+      <p class="text-xs text-stone-500 mb-2">
+        Satu tamu per baris. Format opsional:
+        Nama | Nomor WhatsApp.
+      </p>
+
+      <textarea
+        id="bulk"
+        rows="5"
+        class="border rounded-lg p-3 w-full text-sm"
+        placeholder="Budi&#10;Andi | 628123456789&#10;Siti"
+      ></textarea>
+
+      <div class="text-right mt-2">
+
+        <button
+          id="bulkButton"
+          class="btn primary"
+          type="button"
+        >
+          Tambah Daftar
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <!-- DAFTAR TAMU -->
+
+  <section class="panel p-5">
+
+    <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+
+      <div>
+        <h2 class="font-bold text-lg">Daftar Tamu</h2>
+        <p class="text-xs text-stone-500">
+          Link undangan otomatis berdasarkan ID.
+        </p>
+      </div>
+
+      <button id="exportButton" class="btn muted">
+        Export CSV
+      </button>
+
+    </div>
+
+
+    <!-- FILTER -->
+
+    <div class="grid md:grid-cols-3 gap-2 mb-3">
+
+      <input
+        id="search"
+        class="border rounded-lg p-2.5 text-sm"
+        placeholder="Cari nama / ID / nomor"
+      >
+
+      <select
+        id="rsvp"
+        class="border rounded-lg p-2.5 text-sm"
+      >
+        <option value="">Semua status RSVP</option>
+        <option value="Hadir">Hadir</option>
+        <option value="Berhalangan">Berhalangan</option>
+        <option value="Belum Merespons">Belum Merespons</option>
+      </select>
+
+      <select
+        id="openedFilter"
+        class="border rounded-lg p-2.5 text-sm"
+      >
+        <option value="">Semua status buka</option>
+        <option value="yes">Sudah membuka</option>
+        <option value="no">Belum membuka</option>
+      </select>
+
+    </div>
+
+
+    <p id="count" class="text-xs text-stone-500 mb-2"></p>
+
+
+    <div class="overflow-x-auto">
+
+      <table class="w-full min-w-[850px] text-xs text-left">
+
+        <thead>
+          <tr class="border-b text-stone-500">
+            <th class="py-3">Nama / ID</th>
+            <th>RSVP</th>
+            <th>Pesan</th>
+            <th>Waktu Buka</th>
+            <th>Link / WhatsApp</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+
+        <tbody id="rows"></tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+  <p id="msg" class="text-xs text-center text-stone-500 mt-4"></p>
+
+</section>
+
+<!-- LOADING OVERLAY -->
+<div id="loadingOverlay"
+     class="fixed inset-0 z-[9999] hidden items-center justify-center
+            bg-stone-900/30 backdrop-blur-md">
+
+  <div class="bg-white rounded-2xl shadow-2xl px-8 py-7
+              flex flex-col items-center text-center
+              w-72 max-w-[90%]">
+
+    <div class="relative w-14 h-14 mb-5">
+      <div class="absolute inset-0 rounded-full border-4 border-amber-100"></div>
+      <div class="absolute inset-0 rounded-full border-4
+                  border-transparent border-t-amber-700
+                  animate-spin"></div>
+    </div>
+
+    <h3 id="loadingTitle" class="font-bold text-lg text-stone-800">
+      Memproses...
+    </h3>
+
+    <p id="loadingText" class="text-xs text-stone-500 mt-2">
+      Mohon tunggu sebentar.
+    </p>
+
+  </div>
+</div>
+
+</main>
+
+
+<script>
+
+"use strict";
+
+
+// =====================================
+// KONFIGURASI API
+// =====================================
+
+const API = "https://script.google.com/macros/s/AKfycbwP5yhLPxUK8_Ue0sEw1Rs2QIBrmRnuHPvn2sWfSzBiSLEiE5BCnvVhFPRB_OdzN2OU/exec";
+
+const INVITE = "https://allmezzi.github.io/undangan/";
+
+const $ = id => document.getElementById(id);
+
+let key = "";
+let data = [];
+let loading = false;
+let requestNumber = 0;
+
+
+// =====================================
+// PESAN
+// =====================================
+
+function setMessage(id, message, error = false) {
+
+  const el = $(id);
+
+  el.textContent = message;
+
+  el.classList.toggle("text-red-600", error);
+  el.classList.toggle("text-stone-500", !error);
+
+}
+
+
+// =====================================
+// LOADING MODAL
+// =====================================
+
+function showLoading(
+  title = "Memproses...",
+  message = "Mohon tunggu sebentar."
+) {
+
+  $("loadingTitle").textContent = title;
+  $("loadingText").textContent = message;
+
+  const overlay = $("loadingOverlay");
+
+  overlay.classList.remove("hidden");
+  overlay.classList.add("flex");
+
+  document.body.style.overflow = "hidden";
+}
+
+function hideLoading() {
+
+  const overlay = $("loadingOverlay");
+
+  overlay.classList.add("hidden");
+  overlay.classList.remove("flex");
+
+  document.body.style.overflow = "";
+}
+
+// =====================================
+// LOGIN
+// =====================================
+
+function loginAdmin() {
+
+  const password = $("password").value.trim();
+
+  if (!password) return;
+
+  key = password;
+
+  $("loginButton").disabled = true;
+
+  setMessage("loginMsg", "Memeriksa akses...");
+
+  load(true);
+
+}
+
+
+// =====================================
+// LOGOUT
+// =====================================
+
+function logout() {
+
+  key = "";
+  data = [];
+
+  $("password").value = "";
+
+  $("app").classList.add("hidden");
+
+  $("login").classList.remove("hidden");
+
+  $("loginButton").disabled = false;
+
+  setMessage("loginMsg", "");
+
+}
+
+
+// =====================================
+// LOAD DATA
+// =====================================
+
+function load(first = false) {
+
+  if (loading) return;
+
+  loading = true;
+
+  const requestId = ++requestNumber;
+
+  const target = first ? "loginMsg" : "msg";
+
+  if (!first) {
+    setMessage(target, "Memuat data...");
+  }
+
+  const callbackName = "__adminCallback_" + requestId;
+
+  const script = document.createElement("script");
+
+  let finished = false;
+
+  let timeout;
+
+  function cleanup() {
+
+    if (finished) return;
+
+    finished = true;
+
+    loading = false;
+
+    script.remove();
+
+    delete window[callbackName];
+
+    clearTimeout(timeout);
+
+  }
+
+
+  window[callbackName] = function(result) {
+
+    cleanup();
+    hideLoading();
+    if (!result || result.success !== true) {
+
+      const message =
+        (result && result.message) ||
+        "Login gagal atau data tidak dapat dimuat.";
+
+      setMessage(target, message, true);
+
+      if (first) {
+        $("loginButton").disabled = false;
+      }
+
+      return;
+
+    }
+
+    data = Array.isArray(result.guests)
+      ? result.guests
+      : [];
+
+    $("login").classList.add("hidden");
+
+    $("app").classList.remove("hidden");
+
+    const stats = result.stats || {};
+
+    [
+      "total",
+      "opened",
+      "hadir",
+      "berhalangan",
+      "notOpened",
+      "noResponse"
+    ].forEach(name => {
+
+      $(name).textContent =
+        Number(stats[name] || 0).toLocaleString("id-ID");
+
+    });
+
+    $("rate").textContent =
+      (Number(stats.openRate || 0)) + "% tingkat buka";
+
+    $("updated").textContent =
+      "Diperbarui " + new Date().toLocaleString("id-ID");
+
+    setMessage("msg", "");
+
+    render();
+
+  };
+
+
+  script.onerror = function() {
+
+    cleanup();
+    hideLoading();
+    setMessage(
+      target,
+      "Gagal terhubung ke Google Apps Script. Periksa URL dan deployment API.",
+      true
+    );
+
+    if (first) {
+      $("loginButton").disabled = false;
+    }
+
+  };
+
+
+  timeout = setTimeout(function() {
+
+    cleanup();
+    hideLoading();
+    setMessage(
+      target,
+      "Waktu koneksi habis. Silakan coba lagi.",
+      true
+    );
+
+    if (first) {
+      $("loginButton").disabled = false;
+    }
+
+  }, 20000);
+
+
+  script.src =
+    API +
+    "?action=adminList" +
+    "&key=" + encodeURIComponent(key) +
+    "&callback=" + encodeURIComponent(callbackName) +
+    "&_=" + Date.now();
+
+  document.body.appendChild(script);
+
+}
+
+
+// =====================================
+// ESCAPE HTML
+// =====================================
+
+function esc(value) {
+
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+
+  })[char]);
+
+}
+
+
+// =====================================
+// LINK UNDANGAN
+// =====================================
+
+function link(guest) {
+
+  return INVITE + "?id=" +
+    encodeURIComponent(guest.id || "");
+
+}
+
+
+// =====================================
+// NORMALISASI NOMOR WA
+// =====================================
+
+function norm(phone) {
+
+  let number = String(phone || "")
+    .replace(/\D/g, "");
+
+  if (number.startsWith("0")) {
+
+    number = "62" + number.slice(1);
+
+  } else if (number.startsWith("8")) {
+
+    number = "62" + number;
+
+  }
+
+  return number;
+
+}
+
+
+// =====================================
+// RENDER DAFTAR TAMU
+// =====================================
+
+
+function render() {
+
+  const query = $("search").value.toLowerCase().trim();
+  const rsvp = $("rsvp").value;
+  const opened = $("openedFilter").value;
+
+  const filtered = data.filter(guest => {
+
+    const matchesQuery =
+      !query ||
+      [guest.id, guest.name, guest.phone, guest.message]
+        .some(value =>
+          String(value || "").toLowerCase().includes(query)
+        );
+
+    const matchesRsvp =
+      !rsvp || guest.presence === rsvp;
+
+    const matchesOpened =
+      !opened ||
+      (opened === "yes"
+        ? Boolean(guest.openedAt)
+        : !guest.openedAt);
+
+    return matchesQuery && matchesRsvp && matchesOpened;
+  });
+
+  $("count").textContent =
+    filtered.length + " dari " + data.length + " tamu";
+
+  $("rows").innerHTML = filtered.map(guest => {
+
+    const statusClass =
+      guest.presence === "Hadir"
+        ? "bg-green-100 text-green-700"
+        : guest.presence === "Berhalangan"
+          ? "bg-red-100 text-red-700"
+          : "bg-stone-100 text-stone-600";
+
+    const wa = norm(guest.phone);
+
+    const waMessage =
+      "Halo " + (guest.name || "") +
+      ", berikut link undangan kami: " + link(guest);
+
+    const waLink = wa
+      ? '<a class="text-green-700 underline block mt-1" target="_blank" rel="noopener" href="https://wa.me/' +
+        encodeURIComponent(wa) +
+        '?text=' +
+        encodeURIComponent(waMessage) +
+        '">WhatsApp</a>'
+      : '<span class="text-stone-400 block mt-1">No. WA kosong</span>';
+
+    const openedText = guest.openedAt
+      ? esc(new Date(guest.openedAt).toLocaleString("id-ID"))
+      : "Belum membuka";
+
+    return `
+      <tr class="border-b align-top">
+
+        <td class="py-3">
+          <b>${esc(guest.name)}</b>
+          <div class="text-stone-400">
+            ${esc(guest.id)} · ${esc(guest.phone || "-")}
+          </div>
+        </td>
+
+        <td class="py-3">
+          <span class="badge ${statusClass}">
+            ${esc(guest.presence || "Belum Merespons")}
+          </span>
+        </td>
+
+        <td class="py-3 max-w-xs">
+          ${
+            guest.message
+              ? `<div class="bg-amber-50 border border-amber-100 rounded-lg p-2 text-stone-700 whitespace-pre-wrap break-words">${esc(guest.message)}</div>`
+              : `<span class="text-stone-400 italic">Belum ada pesan</span>`
+          }
+        </td>
+
+        <td class="py-3">
+          ${openedText}
+        </td>
+
+        <td class="py-3">
+          <button
+            type="button"
+            class="text-blue-700 underline"
+            data-action="copy"
+            data-id="${esc(guest.id)}">
+            Salin link
+          </button>
+          ${waLink}
+        </td>
+
+        <td class="py-3 whitespace-nowrap">
+
+          <button
+            type="button"
+            class="btn muted"
+            data-action="edit"
+            data-id="${esc(guest.id)}">
+            Edit
+          </button>
+
+          <button
+            type="button"
+            class="btn muted text-red-600"
+            data-action="delete"
+            data-id="${esc(guest.id)}">
+            Hapus
+          </button>
+
+        </td>
+
+      </tr>
+    `;
+
+  }).join("");
+
+}
+
+
+
+// =====================================
+// COPY LINK
+// =====================================
+
+async function copyLink(id) {
+
+  const guest = data.find(
+    item => String(item.id) === String(id)
+  );
+
+  if (!guest) return;
+
+  const url = link(guest);
+
+  try {
+
+    await navigator.clipboard.writeText(url);
+
+    setMessage("msg", "Link undangan berhasil disalin.");
+
+  } catch (error) {
+
+    window.prompt("Salin link undangan:", url);
+
+  }
+
+}
+
+
+// =====================================
+// POST KE GOOGLE APPS SCRIPT
+// =====================================
+
+
+async function post(payload, successMessage) {
+
+  if (!key) {
+
+    setMessage(
+      "msg",
+      "Sesi admin berakhir. Silakan login kembali.",
+      true
+    );
+
+    return;
+  }
+
+  payload.key = key;
+
+  showLoading(
+    "Sedang memproses...",
+    "Mengirim data ke server. Mohon jangan tutup halaman."
+  );
+
+  setMessage("msg", "Mengirim permintaan...");
+
+  try {
+
+    await fetch(API, {
+
+      method: "POST",
+
+      mode: "no-cors",
+
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+
+      body: JSON.stringify(payload)
+
+    });
+
+    $("msg").textContent =
+      successMessage + " Memuat ulang data...";
+
+    $("msg").classList.remove("text-red-600");
+    $("msg").classList.add("text-stone-500");
+
+    // Tunggu server menyelesaikan proses
+    await new Promise(resolve => setTimeout(resolve, 1800));
+
+    // Muat ulang daftar tamu.
+    // Modal tetap tampil sampai callback load selesai.
+    load(false);
+
+    // Muat ulang daftar tamu
+    load(false);
+
+  } catch (error) {
+
+    hideLoading();
+
+    setMessage(
+      "msg",
+      "Koneksi gagal. Periksa jaringan dan URL Apps Script.",
+      true
+    );
+
+  }
+
+}
+
+
+// =====================================
+// TAMBAH SATU TAMU
+// =====================================
+
+function addGuest(event) {
+
+  event.preventDefault();
+
+  const name = $("newName").value.trim();
+
+  const phone = $("newPhone").value.trim();
+
+  if (!name) return;
+
+  post({
+
+    action: "addGuest",
+
+    name: name,
+
+    phone: phone
+
+  }, "Permintaan tambah tamu telah dikirim.");
+
+  $("addForm").reset();
+
+}
+
+
+// =====================================
+// TAMBAH BANYAK TAMU
+// =====================================
+
+function bulkAdd() {
+
+  const lines = $("bulk").value
+    .trim()
+    .split(/\r?\n/);
+
+  const guests = lines.map(line => {
+
+    const parts = line.split("|");
+
+    return {
+
+      name: (parts[0] || "").trim(),
+
+      phone: (parts[1] || "").trim()
+
+    };
+
+  }).filter(guest => guest.name);
+
+
+  if (!guests.length) {
+
+    alert("Masukkan minimal satu nama tamu.");
+
+    return;
+
+  }
+
+
+  post({
+
+    action: "bulkAdd",
+
+    guests: guests
+
+  }, "Permintaan tambah " + guests.length + " tamu telah dikirim.");
+
+  $("bulk").value = "";
+
+}
+
+
+// =====================================
+// EDIT TAMU
+// =====================================
+
+function editGuest(id) {
+
+  const guest = data.find(
+    item => String(item.id) === String(id)
+  );
+
+  if (!guest) return;
+
+
+  const name = prompt(
+    "Nama tamu:",
+    guest.name || ""
+  );
+
+  if (name === null) return;
+
+  if (!name.trim()) {
+
+    alert("Nama tamu tidak boleh kosong.");
+
+    return;
+
+  }
+
+
+  const phone = prompt(
+    "No. WhatsApp:",
+    guest.phone || ""
+  );
+
+  if (phone === null) return;
+
+
+  const presence = prompt(
+    "Status: Hadir / Berhalangan / Belum Merespons",
+    guest.presence || "Belum Merespons"
+  );
+
+  if (presence === null) return;
+
+
+  const allowed = [
+    "Hadir",
+    "Berhalangan",
+    "Belum Merespons"
+  ];
+
+  if (!allowed.includes(presence.trim())) {
+
+    alert(
+      "Status RSVP harus Hadir, Berhalangan, atau Belum Merespons."
+    );
+
+    return;
+
+  }
+
+
+  const message = prompt(
+    "Pesan:",
+    guest.message || ""
+  );
+
+  if (message === null) return;
+
+
+  post({
+
+    action: "updateGuest",
+
+    id: guest.id,
+
+    name: name.trim(),
+
+    phone: phone.trim(),
+
+    presence: presence.trim(),
+
+    message: message.trim()
+
+  }, "Permintaan perubahan data telah dikirim.");
+
+}
+
+
+// =====================================
+// HAPUS TAMU
+// =====================================
+
+function deleteGuest(id) {
+
+  const guest = data.find(
+    item => String(item.id) === String(id)
+  );
+
+  if (!guest) return;
+
+  if (confirm("Hapus data tamu " + guest.name + "?")) {
+
+    post({
+
+      action: "deleteGuest",
+
+      id: guest.id
+
+    }, "Permintaan hapus tamu telah dikirim.");
+
+  }
+
+}
+
+
+// =====================================
+// EXPORT CSV
+// =====================================
+
+function exportCSV() {
+
+  const headers = [
+    "ID",
+    "Nama",
+    "No. WhatsApp",
+    "Status RSVP",
+    "Pesan",
+    "Waktu Buka"
+  ];
+
+  const rows = data.map(guest => [
+
+    guest.id,
+    guest.name,
+    guest.phone,
+    guest.presence,
+    guest.message,
+    guest.openedAt
+
+  ]);
+
+
+  const csv = [headers, ...rows]
+    .map(row =>
+      row.map(value =>
+        '"' + String(value ?? "")
+          .replace(/"/g, '""') + '"'
+      ).join(",")
+    )
+    .join("\r\n");
+
+
+  const blob = new Blob(
+    ["\uFEFF" + csv],
+    { type: "text/csv;charset=utf-8" }
+  );
+
+  const url = URL.createObjectURL(blob);
+
+  const anchor = document.createElement("a");
+
+  anchor.href = url;
+
+  anchor.download = "daftar-tamu.csv";
+
+  document.body.appendChild(anchor);
+
+  anchor.click();
+
+  anchor.remove();
+
+  URL.revokeObjectURL(url);
+
+}
+
+
+// =====================================
+// EVENT LISTENERS
+// =====================================
+
+$("loginForm").addEventListener("submit", event => {
+
+  event.preventDefault();
+
+  loginAdmin();
+
+});
+
+
+$("addForm").addEventListener("submit", addGuest);
+
+
+$("refreshButton").addEventListener("click", () => {
+
+  showLoading(
+    "Memuat data...",
+    "Mengambil daftar tamu terbaru."
+  );
+
+  load(false);
+
+});
+
+
+$("logoutButton").addEventListener("click", logout);
+
+
+$("bulkButton").addEventListener("click", bulkAdd);
+
+
+$("exportButton").addEventListener("click", exportCSV);
+
+
+$("search").addEventListener("input", render);
+
+
+$("rsvp").addEventListener("change", render);
+
+
+$("openedFilter").addEventListener("change", render);
+
+
+$("rows").addEventListener("click", event => {
+
+  const button = event.target.closest("button[data-action]");
+
+  if (!button) return;
+
+  const id = button.dataset.id;
+
+  if (button.dataset.action === "copy") {
+    copyLink(id);
+  }
+
+  if (button.dataset.action === "edit") {
+    editGuest(id);
+  }
+
+  if (button.dataset.action === "delete") {
+    deleteGuest(id);
+  }
+
+});
+
+</script>
+
+</body>
+</html>

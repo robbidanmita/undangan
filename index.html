@@ -29,15 +29,61 @@
             }
         }
     </script>
-    <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #FDFBF7;
-            color: #2C2A29;
-        }
-        .font-script { font-family: 'Great Vibes', cursive; }
-        .font-serif { font-family: 'Cormorant Garamond', serif; }
-    </style>
+    
+	<style>
+	    body {
+	        font-family: 'Montserrat', sans-serif;
+	        background-color: #FDFBF7;
+	        color: #2C2A29;
+	    }
+	
+	    .font-script {
+	        font-family: 'Great Vibes', cursive;
+	    }
+	
+	    .font-serif {
+	        font-family: 'Cormorant Garamond', serif;
+	    }
+	
+	    /* ANIMASI PEMBUKAAN COVER */
+	    #cover {
+	        opacity: 1;
+	        transform: translateY(0) scale(1);
+	        filter: blur(0);
+	        transition:
+	            transform 1.4s cubic-bezier(0.77, 0, 0.175, 1),
+	            opacity 1.1s ease,
+	            filter 1.2s ease;
+	        transform-origin: center top;
+	        will-change: transform, opacity, filter;
+	    }
+	
+	    #cover.cover-opening {
+	        transform: translateY(-100%) scale(0.96);
+	        opacity: 0;
+	        filter: blur(4px);
+	        pointer-events: none;
+	    }
+	
+	    /* ANIMASI KONTEN UTAMA */
+	    #main-content {
+	        opacity: 0;
+	        transition: opacity 1.5s ease;
+	    }
+	
+	    #main-content.content-visible {
+	        opacity: 1;
+	    }
+	
+	    /* HORMATI PENGATURAN REDUCE MOTION */
+	    @media (prefers-reduced-motion: reduce) {
+	        #cover,
+	        #main-content {
+	            transition-duration: 0.01ms;
+	        }
+	    }
+	</style>
+
 </head>
 <body class="overflow-x-hidden">
 
@@ -764,32 +810,51 @@
 	}
 
 
-        // --- 2. BUKA UNDANGAN ---
         
-		function openInvitation() {
-		
-		    // Catat waktu pembukaan undangan
-		    recordInvitationOpened();
-		
-		    const cover = document.getElementById("cover");
-		
-		    const mainContent = document.getElementById("main-content");
-		
-		    const musicBtn = document.getElementById("musicBtn");
-		
-		    const music = document.getElementById("bgMusic");
-		
-		    cover.style.transform = "translateY(-100%)";
-		
-		    mainContent.classList.remove("opacity-0");
-		
-		    musicBtn.classList.remove("hidden");
-		
-		    music.play().catch(function(error) {
-		        console.log("Audio autoplay prevented");
-		    });
-		
-		}
+	// --- 2. BUKA UNDANGAN ---
+	
+	let invitationIsOpening = false;
+	
+	function openInvitation() {
+	
+	    // Mencegah tombol diklik berulang kali
+	    if (invitationIsOpening) return;
+	
+	    invitationIsOpening = true;
+	
+	    const cover = document.getElementById("cover");
+	    const mainContent = document.getElementById("main-content");
+	    const musicBtn = document.getElementById("musicBtn");
+	    const music = document.getElementById("bgMusic");
+	    const invitationButton = document.getElementById("invitationButton");
+	
+	    // Nonaktifkan tombol selama animasi
+	    invitationButton.disabled = true;
+	
+	    // Catat waktu pembukaan undangan
+	    recordInvitationOpened();
+	
+	    // Tampilkan konten utama
+	    mainContent.classList.add("content-visible");
+	
+	    // Mulai animasi cover
+	    cover.classList.add("cover-opening");
+	
+	    // Tampilkan tombol musik
+	    musicBtn.classList.remove("hidden");
+	
+	    // Putar musik setelah interaksi pengguna
+	    music.play().catch(function(error) {
+	        console.log("Audio autoplay prevented");
+	    });
+	
+	    // Hilangkan cover setelah animasi selesai
+	    setTimeout(function() {
+	        cover.style.display = "none";
+	    }, 1500);
+	
+	}
+
 
 
         // --- 3. TOGGLE MUSIC ---

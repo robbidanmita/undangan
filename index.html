@@ -82,6 +82,64 @@
 	            transition-duration: 0.01ms;
 	        }
 	    }
+		
+		/* =================================
+		   ANIMASI ELEMEN COVER SAAT MUNCUL
+		================================= */
+		
+		@keyframes coverFadeUp {
+		    from {
+		        opacity: 0;
+		        transform: translateY(25px);
+		    }
+		
+		    to {
+		        opacity: 1;
+		        transform: translateY(0);
+		    }
+		}
+		
+		.cover-animate {
+		    opacity: 0;
+		    animation: coverFadeUp 0.9s ease-out forwards;
+		}
+		
+		/* Urutan kemunculan setiap elemen */
+		
+		.cover-delay-1 {
+		    animation-delay: 0.2s;
+		}
+		
+		.cover-delay-2 {
+		    animation-delay: 0.5s;
+		}
+		
+		.cover-delay-3 {
+		    animation-delay: 0.8s;
+		}
+		
+		.cover-delay-4 {
+		    animation-delay: 1.1s;
+		}
+		
+		.cover-delay-5 {
+		    animation-delay: 1.4s;
+		}
+		
+		.cover-delay-6 {
+		    animation-delay: 1.7s;
+		}
+		
+		/* Hormati pengaturan reduce motion */
+		
+		@media (prefers-reduced-motion: reduce) {
+		    .cover-animate {
+		        opacity: 1;
+		        animation: none;
+		        transform: none;
+		    }
+		}
+
 	</style>
 
 </head>
@@ -108,33 +166,38 @@
 	         );">
 	    </div>
 	
-	    <!-- BAGIAN ATAS: NAMA PENGANTIN -->
-	   <div class="relative z-10 max-w-md mx-auto space-y-5 -mt-12">
-	
-	        <p class="text-xs md:text-sm uppercase tracking-[0.4em] text-gold mb-5">
-	            The Wedding Of
-	        </p>
-	
-	        <h1 class="font-script text-5xl md:text-6xl text-gold leading-tight">
-			    Robbi & Mita
-			</h1>
-	
-	        <div class="w-16 h-px bg-gold mx-auto mt-6 opacity-70"></div>
-	
-	    </div>
+	   <!-- BAGIAN ATAS: NAMA PENGANTIN -->
+		<div class="relative z-10 max-w-md mx-auto space-y-5 -mt-12">
+		
+		    <p class="text-xs md:text-sm uppercase tracking-[0.4em] text-gold mb-5
+		              cover-animate cover-delay-1">
+		        The Wedding Of
+		    </p>
+		
+		    <h1 class="font-script text-5xl md:text-6xl text-gold leading-tight
+		               cover-animate cover-delay-2">
+		        Robbi & Mita
+		    </h1>
+		
+		    <div class="w-16 h-px bg-gold mx-auto mt-6 opacity-70
+		                cover-animate cover-delay-3"></div>
+		
+		</div>
 	
 	
 	    <!-- BAGIAN BAWAH: INFORMASI TAMU -->
 	    <div class="relative z-10 w-full max-w-md mx-auto pb-8 space-y-5">
 	
-	        <p class="text-sm md:text-base font-light text-gray-200">
+	        <p class="text-sm md:text-base font-light text-gray-200
+          		cover-animate cover-delay-3">
 	            Kepada Yth. Bapak/Ibu/Saudara/i,
 	        </p>
 	
 	        <!-- NAMA TAMU -->
 	        <div class="inline-flex items-center justify-center gap-3
-	                    py-3 px-7 bg-black/30 backdrop-blur-md
-	                    rounded-full border border-gold/40">
+	            py-3 px-7 bg-black/30 backdrop-blur-md
+	            rounded-full border border-gold/40
+	            cover-animate cover-delay-4">
 	
 	            <i id="guestLoading"
 	               class="fa-solid fa-circle-notch fa-spin text-gold text-sm">
@@ -149,7 +212,7 @@
 	        </div>
 	
 	        <!-- TOMBOL BUKA UNDANGAN -->
-	        <div class="pt-3">
+	        <div class="pt-3 cover-animate cover-delay-5">
 	
 	            <button
 	                id="invitationButton"
@@ -168,7 +231,8 @@
 	
 	        </div>
 	
-	        <p class="text-[10px] text-gray-300 tracking-widest uppercase pt-2">
+	        <p class="text-[10px] text-gray-300 tracking-widest uppercase pt-2
+         		cover-animate cover-delay-6">
 	            With Love & Blessings
 	        </p>
 	

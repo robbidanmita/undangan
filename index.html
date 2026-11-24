@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undangan Pernikahan - Robbi Fadillah Spd & Mita Amelia Devi </title>
+    <title>Undangan Pernikahan - Robbi Fadillah SE & Mita Amelia Devi </title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -175,7 +175,7 @@
 				<h1 class="font-script text-6xl md:text-8xl leading-tight"
 				    style="color:#E8C995;
 				           text-shadow:0 3px 14px rgba(0,0,0,0.9);">
-				    Robbi Fadillah Spd
+				    Robbi Fadillah SE
 				    <span class="block text-4xl md:text-5xl my-2"
 				          style="color:#F5E4C8;">&</span>
 				    Mita Amelia Devi
@@ -229,9 +229,9 @@
                 <!-- Groom -->
                 <div class="space-y-4 flex flex-col items-center">
                     <div class="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden shadow-xl border-4 border-gold/40">
-                        <img src="./foto/FotoRobbi.jpeg" alt="Robbi_Fadillah_Spd" class="w-full h-full object-cover">
+                        <img src="./foto/FotoRobbi.jpeg" alt="Robbi_Fadillah_SE" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="font-script text-4xl text-gold">Robbi Fadillah Spd, </h3>
+                    <h3 class="font-script text-4xl text-gold">Robbi Fadillah SE, </h3>
                     <p class="text-xs tracking-wider uppercase text-gray-500 font-medium">Putra dari Bpk. Mulyadi & Ibu Mahdalena</p>
                     <a href="https://www.instagram.com/robbi.fadillah?avpt=MWMya3VsYXF1anExNQ==" target="_blank" class="text-gold hover:text-darkgold transition"><i class="fa-brands fa-instagram text-xl"></i></a>
                 </div>
@@ -579,9 +579,9 @@
 
         <!-- FOOTER -->
         <footer class="bg-softdark text-cream py-12 text-center space-y-4 px-6 border-t border-gold/20">
-            <h2 class="font-script text-4xl text-gold">Robbi Fadillah Spd  &  Mita Amelia Devi</h2>
+            <h2 class="font-script text-4xl text-gold">Robbi Fadillah SE  &  Mita Amelia Devi</h2>
             <p class="text-xs uppercase tracking-[0.3em] text-gray-400">Terima Kasih</p>
-            <p class="text-[11px] text-gray-500 pt-4">&copy; 2026 Robbi Fadillah Spd  &  Mita Amelia Devi Wedding. All Rights Reserved.</p>
+            <p class="text-[11px] text-gray-500 pt-4">&copy; 2026 Robbi Fadillah SE  &  Mita Amelia Devi Wedding. All Rights Reserved.</p>
         </footer>
 
     </div>
@@ -811,7 +811,7 @@
         }
 
         // --- 4. COUNTDOWN TIMER ---
-        const weddingDate = new Date("Dec 15, 2026 08:00:00").getTime();
+        const weddingDate = new Date("Dec 20, 2026 09:00:00").getTime();
         const countdownTimer = setInterval(() => {
             const now = new Date().getTime();
             const distance = weddingDate - now;
@@ -1038,9 +1038,16 @@
 				status.textContent =
 					"Permintaan terkirim. Memperbarui daftar ucapan...";
 
+				// Kosongkan form setelah pengiriman
 				form.reset();
-
-				// Ambil ulang data setelah beberapa detik
+				
+				// Kembalikan nama tamu setelah form di-reset
+				document.getElementById("guestName").value = currentGuestName;
+				
+				// Pastikan nama tetap terkunci
+				document.getElementById("guestName").readOnly = true;
+				
+				// Ambil ulang daftar ucapan setelah 3 detik
 				setTimeout(loadComments, 3000);
 
 			} catch (error) {
@@ -1066,7 +1073,7 @@
 
 		loadComments();
 
-		setInterval(loadComments, 10000);
+		setInterval(loadComments, 30000);
 
         <!-- function escapeHtml(text) {return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");} -->
     </script>

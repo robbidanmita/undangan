@@ -42,47 +42,98 @@
 <body class="overflow-x-hidden">
 
     <!-- COVER SECTION -->
-    <div id="cover" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-softdark text-cream px-6 text-center transition-transform duration-1000">
-        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#C5A880_1px,transparent_1px)] [background-size:16px_16px]"></div>
-        <div class="relative z-10 max-w-md mx-auto space-y-6">
-            <span class="text-xs uppercase tracking-[0.3em] text-gold">The Wedding Of</span>
-            <h1 class="font-script text-6xl md:text-7xl text-gold">Robbi Fadillah Spd & Mita Amelia Devi</h1>
-            <p class="text-sm font-light text-gray-300">Kepada Yth. Bapak/Ibu/Saudara/i,</p>
-            
-			<!-- NAMA TAMU -->
-			<div class="py-3 px-6 bg-white/10 backdrop-blur-sm rounded-full inline-flex items-center justify-center gap-3 border border-gold/30">
-			
-			    <!-- Loading Spinner -->
-			    <i id="guestLoading"
-			       class="fa-solid fa-circle-notch fa-spin text-gold text-sm"></i>
-			
-			    <!-- Nama Tamu -->
-			    <span id="guestNameDisplay"
-			          class="text-base font-semibold tracking-wide text-gold capitalize">
-			        Memuat data tamu...
-			    </span>
-			
-			</div>
-			
-			<!-- TOMBOL BUKA UNDANGAN -->
-			<div class="pt-4">
-			
-			    <button
-			        id="invitationButton"
-			        onclick="openInvitation()"
-			        disabled
-			        class="px-8 py-3 bg-gold text-softdark font-medium rounded-full shadow-lg transition-all duration-300 flex items-center gap-2 mx-auto uppercase tracking-wider text-xs opacity-50 cursor-not-allowed">
-			
-			        <i class="fa-solid fa-lock" id="invitationButtonIcon"></i>
-			
-			        <span id="invitationButtonText">Memuat...</span>
-			
-			    </button>
-			
-			</div>
+    
+	<!-- COVER SECTION -->
+	<div id="cover"
+	     class="fixed inset-0 z-50 flex flex-col items-center justify-between
+	            text-cream px-5 py-12 text-center transition-transform duration-1000
+	            bg-cover bg-center overflow-hidden"
+	     style="background-image: url('./foto/foto3.jpeg');">
+	
+	    <!-- DARK OVERLAY -->
+	    <div class="absolute inset-0 bg-black/50"></div>
+	
+	    <!-- GRADIENT OVERLAY -->
+	    <div class="absolute inset-0"
+	         style="background: linear-gradient(
+	             to bottom,
+	             rgba(20,16,14,0.65),
+	             rgba(20,16,14,0.25) 45%,
+	             rgba(20,16,14,0.75)
+	         );">
+	    </div>
+	
+	    <!-- BAGIAN ATAS: NAMA PENGANTIN -->
+	    <div class="relative z-10 w-full max-w-3xl mx-auto pt-10">
+	
+	        <p class="text-xs md:text-sm uppercase tracking-[0.4em] text-gold mb-5">
+	            The Wedding Of
+	        </p>
+	
+	        <h1 class="font-script text-3xl sm:text-4xl md:text-5xl text-gold
+	                   leading-relaxed whitespace-nowrap">
+	            Robbi Fadillah Spd
+	            <span class="mx-1">&</span>
+	            Mita Amelia Devi
+	        </h1>
+	
+	        <div class="w-16 h-px bg-gold mx-auto mt-6 opacity-70"></div>
+	
+	    </div>
+	
+	
+	    <!-- BAGIAN BAWAH: INFORMASI TAMU -->
+	    <div class="relative z-10 w-full max-w-md mx-auto pb-8 space-y-5">
+	
+	        <p class="text-sm md:text-base font-light text-gray-200">
+	            Kepada Yth. Bapak/Ibu/Saudara/i,
+	        </p>
+	
+	        <!-- NAMA TAMU -->
+	        <div class="inline-flex items-center justify-center gap-3
+	                    py-3 px-7 bg-black/30 backdrop-blur-md
+	                    rounded-full border border-gold/40">
+	
+	            <i id="guestLoading"
+	               class="fa-solid fa-circle-notch fa-spin text-gold text-sm">
+	            </i>
+	
+	            <span id="guestNameDisplay"
+	                  class="text-sm md:text-base font-semibold
+	                         tracking-wide text-gold capitalize">
+	                Memuat data tamu...
+	            </span>
+	
+	        </div>
+	
+	        <!-- TOMBOL BUKA UNDANGAN -->
+	        <div class="pt-3">
+	
+	            <button
+	                id="invitationButton"
+	                onclick="openInvitation()"
+	                disabled
+	                class="px-9 py-3.5 bg-gold text-softdark font-medium
+	                       rounded-full shadow-xl transition-all duration-300
+	                       flex items-center gap-3 mx-auto uppercase
+	                       tracking-widest text-xs opacity-50 cursor-not-allowed">
+	
+	                <i class="fa-solid fa-lock" id="invitationButtonIcon"></i>
+	
+	                <span id="invitationButtonText">Memuat...</span>
+	
+	            </button>
+	
+	        </div>
+	
+	        <p class="text-[10px] text-gray-300 tracking-widest uppercase pt-2">
+	            With Love & Blessings
+	        </p>
+	
+	    </div>
+	
+	</div>
 
-        </div>
-    </div>
 
     <!-- MAIN CONTENT -->
     <div id="main-content" class="opacity-0 transition-opacity duration-1000">
@@ -288,28 +339,62 @@
 		      tanda kasih, dapat melalui rekening berikut.
 		    </p>
 		
-		    <div class="border border-amber-200 rounded-xl p-6 bg-amber-50/50">
-		      <h3 class="font-semibold tracking-widest text-lg mb-4">
-		        CIMB NIAGA
-		      </h3>
-		
-		      <p class="text-2xl font-bold tracking-wider mb-2">
-		        763647749700
-		      </p>
-				<p class="text-2xl font-bold tracking-wider mb-2">
-		        Mita Amelia Devi
-		      </p>
-		
-		      <p class="text-xs text-gray-500 mb-5">
-		        Nomor Rekening
-		      </p>
-		      <button
-		        onclick="copyRekening()"
-		        class="bg-stone-800 text-white px-6 py-2 rounded-full text-sm hover:bg-stone-700">
-		        <i class="fa-regular fa-copy mr-2"></i>
-		        Salin Nomor Rekening
-		      </button>
-		    </div>
+		    
+			<!-- REKENING 1 -->
+			<div class="border border-amber-200 rounded-xl p-6 bg-amber-50/50">
+			
+			    <div class="flex items-center justify-between mb-5">
+			        <h3 class="font-semibold tracking-widest text-lg">
+			            CIMB NIAGA
+			        </h3>
+			        <i class="fa-solid fa-building-columns text-amber-700 text-xl"></i>
+			    </div>
+			
+			    <p class="text-2xl font-bold tracking-wider mb-2">
+			        763647749700
+			    </p>
+			
+			    <p class="text-sm font-medium text-gray-600 mb-5">
+			        Mita Amelia Devi
+			    </p>
+			
+			    <button
+			        onclick="copyRekening('763647749700')"
+			        class="w-full bg-stone-800 text-white px-6 py-3 rounded-full text-sm hover:bg-stone-700 transition">
+			        <i class="fa-regular fa-copy mr-2"></i>
+			        Salin Nomor Rekening
+			    </button>
+			
+			</div>
+			
+			
+			<!-- REKENING 2 -->
+			<div class="border border-amber-200 rounded-xl p-6 bg-amber-50/50 mt-4">
+			
+			    <div class="flex items-center justify-between mb-5">
+			        <h3 class="font-semibold tracking-widest text-lg">
+			            CIMB NIAGA
+			        </h3>
+			        <i class="fa-solid fa-building-columns text-amber-700 text-xl"></i>
+			    </div>
+			
+			    <p class="text-2xl font-bold tracking-wider mb-2">
+			        762979966000
+			    </p>
+			
+			    <p class="text-sm font-medium text-gray-600 mb-5">
+			        Robbi Fadillah
+			    </p>
+			
+			    <button
+			        onclick="copyRekening('762979966000')"
+			        class="w-full bg-stone-800 text-white px-6 py-3 rounded-full text-sm hover:bg-stone-700 transition">
+			        <i class="fa-regular fa-copy mr-2"></i>
+			        Salin Nomor Rekening
+			    </button>
+			
+			</div>
+
 		
 		    <p class="text-gray-400 text-xs mt-6 italic">
 		      Terima kasih atas doa dan tanda kasih Anda.
@@ -319,10 +404,10 @@
 		</section>
 		
 		<script>
-		function copyRekening() {
-		  navigator.clipboard.writeText("763647749700")
-		    .then(() => alert("Nomor rekening berhasil disalin"))
-		    .catch(() => alert("Gagal menyalin nomor rekening"));
+		function copyRekening(nomor) {
+		    navigator.clipboard.writeText(nomor)
+		        .then(() => alert("Nomor rekening berhasil disalin: " + nomor))
+		        .catch(() => alert("Gagal menyalin nomor rekening"));
 		}
 		</script>
 
